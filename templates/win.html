@@ -1,0 +1,19 @@
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Won
+{% endblock %}
+
+{% block main %}
+<h1 style = "font-size: 300%;">
+    You Won
+    </h1>
+    <p style = "font-size: 250%;">score = {{ score  }} &emsp;
+    <img src ="https://emojipedia-us.s3.amazonaws.com/source/microsoft-teams/337/party-popper_1f389.png">    </p>
+<br>
+<form action="/start" method="get">
+    <button type="submit" style="font-size: 200%; background-color: rgb(30,30,30); color:beige;" class="nav-item" >Play Again</button>
+</form>
+
+{% endblock %}

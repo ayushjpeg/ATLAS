@@ -1,0 +1,34 @@
+
+
+{% extends "layout.html" %}
+
+{% block title %}
+    Home
+{% endblock %}
+
+{% block main %}
+<h1 style="font-size: 300%; font-style: normal; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;">
+Welcome to Atlas. <br>The rules are as follows:-
+</h1>
+<ol style="text-align: left;font-size: 150%;">
+    <br>
+    <li>  This game is all about names of different places. You enter a name of place and the website returns another place starting with the last letter of your input.</li>
+    <br>
+    <li> The game continues in the same manner you again enter a place starting from the last letter of returned word. Remember the first word has to start with the letter "A".</li>
+    <br>
+    <li> At the beginning you have to enter the difficulty level and no. of passes, a pass will help you skip when you dont know any name with the given letter, when you have 0 passes left you loose.</li>
+    <br>
+    <li> Difficultly level can be any positive integer, a difficulty level of 10-20 is very easy and computer might lose in the first turn, a difficulty of 250 is moderate and keeps getting harder as you increase the number. Default value is 250 and 3 for passes.</li>
+    <br>
+    <li> If you enter any place not present in the database or in case of a typo, the website will return "Word not in database" which means you have to again enter another place with same letter.</li>
+    <br>
+    <li> You cannot use a name which has been already used in a particular session of game.</li>
+    <br>
+    <li> You can type pass when you dont have an answer.</li>
+    <br>
+    <li> When you dont know about a place you can search for it you will get a result from Wikipedia. At times it you might get an error or wrong info when there are multiple articles on Wikipedia with same name or there is no article.</li>
+</ol>
+<div class="form-group">
+    <button type="submit" style="font-size: 200%; background-color: rgb(30,30,30);" class="nav-item"><a class="nav-link" style="color: beige;" href="/start">Let's Begin</a></button>
+</div>
+{% endblock %}

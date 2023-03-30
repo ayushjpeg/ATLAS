@@ -1,0 +1,49 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Start
+{% endblock %}
+
+{% block main %}
+<p style = "text-align: left;font-size: 150%; font-family: 'Courier New', Courier, monospace;">
+Current difficulty set to {{  difficulty  }}. <br>
+Passes left = {{  passes  }} .<br>
+Score = {{ score  }}.
+</p>
+<p style = "font-size: 250%; color: khaki;">
+    <u>{{ phrase }}</u>
+</p>
+<p style = "font-size: 300%; color: burlywood;">
+        Next Word is : <u><b>{{ last }}</b></u>
+</p>
+<form  method="post">
+    <fieldset>
+        <div class="form-group">
+            <input autocomplete="off" style = "background-color: rgb(32,32,32); color: beige;" autofocus class="form-control" name="place" placeholder="Enter the name of place " type="string"/>
+        </div>
+        <br>
+        <div class="form-group">
+            <button class="btn btn-default" style="font-size: 200%; color: greenyellow" type="submit">Submit</button>
+        </div>
+
+
+    </fieldset>
+</form>
+<form action="/passes/" method="post">
+    <button class="btn btn-default" style="font-size: 200%; color: crimson" type="submit">Pass</button>
+</form>
+</form>
+<form action="/search/" method="post" style="font-size: 200%; color: grey;text-align: left;">
+    Don't Know about this place. <button class="btn btn-default" style="font-size: 100%; color: aqua" type="submit">Search</button>
+</form>
+<br>
+<br>
+
+
+<pre style = "font-size: 130%; font-style: oblique; color: aquamarine;">
+<p style = "text-justify: auto;text-align: center;">
+{{ article }}
+</p>
+</pre>
+
+{% endblock %}
