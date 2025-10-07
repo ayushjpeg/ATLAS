@@ -1,0 +1,24 @@
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+build/
+dist/
+.eggs/
+.idea/
+.vscode/
+*.egg-info
+*.sqlite3
+.DS_Store
+*.log
+
+# Exclude local large files
+*.mp4
+*.mkv
+*.zip
+
+# Don't exclude Atlas data if user includes it, but ignore node_modules if present
+node_modules

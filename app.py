@@ -14,6 +14,10 @@ for i in range(len(L)):
     data.append(L[i][0:-1].upper())
 
 
+import nltk
+nltk.download('punkt_tab')
+
+
 # Configure application
 app = Flask(__name__)
 
@@ -186,4 +190,4 @@ def search():
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
