@@ -1,6 +1,8 @@
 import random, os, sys
 from flask import Flask, redirect, render_template, request
 from Atlas import article, wiki
+from werkzeug.middleware.dispatcher import DispatcherMiddleware
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 # -------------------------------------------------------------------
 # Load data
@@ -15,10 +17,8 @@ data = []
 for i in range(len(L)):
     data.append(L[i][0:-1].upper())
 
-
 import nltk
 nltk.download('punkt_tab')
-
 
 # Configure application
 app = Flask(__name__)
@@ -40,18 +40,15 @@ n = 250
 n2 = 3
 z = 1
 
-
 # -------------------------------------------------------------------
 # Helper: prefix-safe redirect
 # -------------------------------------------------------------------
 def prefixed(path: str):
     """
-    Ensures redirect uses prefix (e.g., /atlas).
-    Works automatically behind reverse proxy.
+    Issues redirect relative to the script root (/atlas).
     """
     root = request.script_root.rstrip('/')
     return redirect(f"{root}{path}")
-
 
 # -------------------------------------------------------------------
 # Game logic
@@ -232,7 +229,17 @@ def search():
 
 
 # -------------------------------------------------------------------
-# Run local dev
+# Mount Flask app under /atlas for production WSGI
+# -------------------------------------------------------------------
+app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
+
+root_app = Flask("root_app")  # dummy app for /
+application = DispatcherMiddleware(root_app, {
+    "/atlas": app
+})
+
+# -------------------------------------------------------------------
+# Run local development
 # -------------------------------------------------------------------
 if __name__ == '__main__':
     app.run()
