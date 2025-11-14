@@ -200,12 +200,22 @@ def lost():
 
 
 @app.route("/atlas/search", methods=['POST'])
+@app.route("/atlas/search/", methods=['GET', 'POST'])
 def search():
+    """Handle search requests.
+
+    - POST: perform the article/wiki lookup (existing behavior)
+    - GET: user visiting the URL in a browser (with trailing slash) should not 404; redirect to /atlas/begin
+    """
     global ph, arti, lw
+
+    # If this is a GET (e.g. browser visit to /atlas/search/), just redirect back to the game
+    if request.method != 'POST':
+        return prefixed("/begin")
 
     try:
         lk = article(wiki(lw))
-    except:
+    except Exception:
         lk = 'Sorry information could not be retrived'
 
     ph = 'Search result loaded'
