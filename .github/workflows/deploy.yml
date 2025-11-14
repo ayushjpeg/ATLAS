@@ -47,3 +47,10 @@ jobs:
         run: |
           echo "Container status:"
           docker ps | grep atlas-app || (echo "Container not running!" && exit 1)
+
+
+
+permissions:
+  contents: read
+  id-token: write
+
