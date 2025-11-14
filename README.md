@@ -48,5 +48,5 @@ This project is also linked with wikipedia the details of the cities and countri
  When pass is less than 0 you loose and you are redirected to lost.html where your score is displayed and there is option to return to start page by clicking play again.
  You win the game if the program cannot randomly find an unused placed with the given letter in the number of tries entered in difficulty.
  After winning you are redirected to win.html which is similar to lost.html except for the emoji.
- This application is completed.
+
 
