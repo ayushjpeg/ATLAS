@@ -17,7 +17,9 @@ import nltk
 nltk.download('punkt_tab')
 
 # Configure application
-app = Flask(__name__)
+# Serve static files under the /atlas prefix so the app can be mounted at /atlas
+# (this makes url_for('static', ...) generate /atlas/static/<file>)
+app = Flask(__name__, static_url_path='/atlas/static', static_folder='static')
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
 # Globals
