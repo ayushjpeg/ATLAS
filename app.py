@@ -1,12 +1,8 @@
 import random, os, sys
 from flask import Flask, redirect, render_template, request
 from Atlas import article, wiki
-from werkzeug.middleware.dispatcher import DispatcherMiddleware
-from werkzeug.middleware.proxy_fix import ProxyFix
 
-# -------------------------------------------------------------------
 # Load data
-# -------------------------------------------------------------------
 try:
     L = open(os.path.join(sys.path[0], "Atlas.txt"), "r").readlines()
 except:
@@ -24,9 +20,7 @@ nltk.download('punkt_tab')
 app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 
-# -------------------------------------------------------------------
 # Globals
-# -------------------------------------------------------------------
 input1 = ''
 fl1 = ''
 ll = 'A'
@@ -40,19 +34,13 @@ n = 250
 n2 = 3
 z = 1
 
-# -------------------------------------------------------------------
-# Helper: prefix-safe redirect
-# -------------------------------------------------------------------
-def prefixed(path: str):
-    """
-    Issues redirect relative to the script root (/atlas).
-    """
-    root = request.script_root.rstrip('/')
-    return redirect(f"{root}{path}")
 
-# -------------------------------------------------------------------
+# Helper: redirect inside /atlas
+def prefixed(path: str):
+    return redirect(f"/atlas{path}")
+
+
 # Game logic
-# -------------------------------------------------------------------
 def check():
     global check1, used, ll, score, input1
     if check1:
@@ -67,7 +55,7 @@ def check():
 
         elif input1[0].upper() != ll.upper():
             check1 = False
-            return 'First letter of your word does not match with the last letter of previous word'
+            return 'First letter does not match'
 
         elif input1.upper() not in data:
             check1 = False
@@ -75,7 +63,7 @@ def check():
 
         else:
             check1 = False
-            return 'Somethings wrong'
+            return 'Something is wrong'
 
 
 def run():
@@ -96,9 +84,7 @@ def run():
         return 'You Won'
 
 
-# -------------------------------------------------------------------
 # Disable caching
-# -------------------------------------------------------------------
 @app.after_request
 def after_request(response):
     response.headers["Cache-Control"] = "no-cache, no-store, must-revalidate"
@@ -107,19 +93,19 @@ def after_request(response):
     return response
 
 
-# -------------------------------------------------------------------
-# Routes
-# -------------------------------------------------------------------
-@app.route('/')
+# ------------------------------------------------------------
+# ROUTES — ALL PREFIXED WITH /atlas
+# ------------------------------------------------------------
+
+@app.route('/atlas/')
 def index():
     return render_template("index.html")
 
 
-@app.route('/start', methods=["GET", "POST"])
+@app.route('/atlas/start', methods=["GET", "POST"])
 def start():
     global n, n2, z, used, fl1, check1, lw, phra, score, ll, arti
 
-    # Reset everything
     score = 0
     z = 1
     check1 = True
@@ -148,7 +134,7 @@ def start():
     return render_template("start.html")
 
 
-@app.route('/begin', methods=["GET", "POST"])
+@app.route('/atlas/begin', methods=["GET", "POST"])
 def begin():
     global n, n2, used, z, fl1, check1, input1, lw, ph, arti, score, phra
 
@@ -185,7 +171,7 @@ def begin():
                            score=score)
 
 
-@app.route("/passes/", methods=['POST'])
+@app.route('/atlas/passes', methods=['POST'])
 def passes():
     global n2, fl1, check1, lw, ph, ll, arti
 
@@ -208,12 +194,12 @@ def passes():
     return prefixed("/begin")
 
 
-@app.route("/lost")
+@app.route('/atlas/lost')
 def lost():
     return render_template("lost.html", score=score)
 
 
-@app.route("/search/", methods=['POST'])
+@app.route("/atlas/search", methods=['POST'])
 def search():
     global ph, arti, lw
 
@@ -228,18 +214,6 @@ def search():
     return prefixed("/begin")
 
 
-# -------------------------------------------------------------------
-# Mount Flask app under /atlas for production WSGI
-# -------------------------------------------------------------------
-app.wsgi_app = ProxyFix(app.wsgi_app, x_for=1, x_proto=1, x_host=1)
-
-root_app = Flask("root_app")  # dummy app for /
-application = DispatcherMiddleware(root_app, {
-    "/atlas": app
-})
-
-# -------------------------------------------------------------------
 # Run local development
-# -------------------------------------------------------------------
 if __name__ == '__main__':
     app.run()
