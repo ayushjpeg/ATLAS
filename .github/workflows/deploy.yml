@@ -28,6 +28,12 @@ jobs:
             docker rm atlas-app
           fi
 
+      - name: Remove old images
+        run: |
+          docker image prune -f
+          docker container prune -f
+
+
       - name: Run new container
         run: |
           docker run -d \
